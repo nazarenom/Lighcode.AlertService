@@ -2,8 +2,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Description>Mail di servizio e invio mail unattended</Description>
-    <Authors>LightCode srl</Authors>
-    <Company>LightCode srl</Company>
+    <Authors>Lightcode srl</Authors>
+    <Company>Lightcode srl</Company>
     <Copyright>Copyright © 2019</Copyright>
     <AssemblyVersion>0.0.10</AssemblyVersion>
     <FileVersion>0.0.10</FileVersion>
