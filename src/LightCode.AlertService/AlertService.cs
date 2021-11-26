@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
 
-namespace Lightcode.AlertService
+namespace LightCode.AlertService
 {
     public class AlertService : IAlertService
     {

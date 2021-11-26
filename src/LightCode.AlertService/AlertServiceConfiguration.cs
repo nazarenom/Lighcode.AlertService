@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 
-namespace Lightcode.AlertService
+namespace LightCode.AlertService
 {
     public static class AlertServiceConfiguration
     {

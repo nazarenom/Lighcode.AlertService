@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lightcode.AlertService
+namespace LightCode.AlertService
 {
     public interface IAlertService
     {
