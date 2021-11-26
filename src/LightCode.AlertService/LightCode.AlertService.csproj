@@ -5,8 +5,8 @@
     <Authors>LightCode srl</Authors>
     <Company>LightCode srl</Company>
     <Copyright>Copyright © 2019</Copyright>
-    <AssemblyVersion>0.0.9</AssemblyVersion>
-    <FileVersion>0.0.9</FileVersion>
+    <AssemblyVersion>0.0.10</AssemblyVersion>
+    <FileVersion>0.0.10</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
