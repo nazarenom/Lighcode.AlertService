@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+		<PackageId>Lightcode.AlertService</PackageId>
+        <id>Lightcode.AlertService</id>
+        <title>Lightcode.AlertService</title>
+		<Authors>LightCode srl</Authors>
+		<Company>LightCode srl</Company>
+		<Copyright>Copyright © 2021</Copyright>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <Description>Mail di servizio e invio mail unattended</Description>
+        <dependencies />
+    </metadata>
+</package>
