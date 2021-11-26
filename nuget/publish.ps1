@@ -2,8 +2,8 @@ $ErrorActionPreference = "Stop"
 
 $nugetServer = "http://lightcodenuget.azurewebsites.net/nuget"
 $apiKey = "0DB79AEE-1D2D-44F0-BDAD-863EEEC4BC0C"
-$packageName = "LightCode.AlertService"
-$projPath = "..\src\LightCode.AlertService\LightCode.AlertService.csproj"
+$packageName = "Lightcode.AlertService"
+$projPath = "..\src\Lightcode.AlertService\Lightcode.AlertService.csproj"
 
 function FormatVersion([string] $version) {
 	$parsedVersion = [System.Version]::Parse($version)
