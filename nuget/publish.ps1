@@ -39,6 +39,12 @@ function Set-ProjectVersion ([string] $path, [string] $version) {
 	}
 	$xml.Project.PropertyGroup.FileVersion = $version
 	$xml.Save($filePath) | Out-Null
+
+	$specFile = $filePath -replace "csproj", "nuspec"
+	$xmlSpec = [xml](Get-Content $specFile)
+	$xmlSpec.package.metadata.version = $version
+	$xmlSpec.Save($specFile) | Out-Null
+
 }
 
 function NextBuildVersion([string] $version) {
@@ -48,6 +54,37 @@ function NextBuildVersion([string] $version) {
 	$newVersion = [string]::join('.', $versionTokens)
 	return $newVersion 
 }
+
+function ExistNuspecFile([string] $path) { 
+	$specFile = $path -replace "csproj", "nuspec"
+	$exist = Test-Path -Path $specFile -PathType Leaf
+	return $exist
+}
+
+function CreateNuspecFile([string] $path) { 
+	
+	$description = Read-Host "File Nuspec non presente. Inserire una descrizione per il pacchetto nuget"
+
+	$specFile = $path -replace "csproj", "nuspec"
+
+	New-Item $specFile
+	Set-Content $specFile "<?xml version=""1.0""?>"
+	Add-Content $specFile "<package xmlns=""http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd"">"
+	Add-Content $specFile "  <metadata>"
+	Add-Content $specFile "    <id>$packageName</id>"
+	Add-Content $specFile "    <title>$packageName</title>"
+	Add-Content $specFile "    <authors>LightCode srl</authors>"
+	Add-Content $specFile "    <copyright>Copyright © 2021</copyright>"
+	Add-Content $specFile "    <version>0.0.0</version>"
+	Add-Content $specFile "    <requireLicenseAcceptance>false</requireLicenseAcceptance>"
+	Add-Content $specFile "    <description>$description</description>"
+	Add-Content $specFile "    <dependencies />"
+	Add-Content $specFile "  </metadata>"
+	Add-Content $specFile "</package>"
+	return $exist
+}
+
+
 
 $changedFiles = $(git status --porcelain | Measure-Object | Select-Object -expand Count)
 if ($changedFiles -gt 0)
@@ -90,21 +127,30 @@ if ($latestRelease -ne "No packages found.")
 	}	
 }
 
+if (-not (ExistNuspecFile $projPath))
+{
+	CreateNuspecFile $projPath
+}
+
+Write-Host "Updating version in .Net files"
+Set-ProjectVersion -path $projPath -version $reqestedVersion
+
+Write-Host "Build project..."
+dotnet restore $projPath
+dotnet  build $projPath
+
 Write-Host "Packing nuget package..."
 get-childitem | Where-Object {$_.extension -eq ".nupkg"} | ForEach-Object ($_) {remove-item $_.fullname}
-nuget pack $projPath -Version $reqestedVersion -build
+nuget pack $projPath -Version $reqestedVersion
 
 Write-Host "Pushing nuget package..."
 $package = get-childitem | Where-Object {$_.extension -eq ".nupkg"}
 nuget push -Source $nugetServer $package $apiKey
 
-Write-Host "Updating version in .Net files"
-Set-ProjectVersion -path $projPath -version $reqestedVersion
-
 if ($changedFiles -eq 0)
 {
 	git add ..
-	git commit -m "pubblicazione versione $reqestedVersion"
+	git commit -m "Pubblicazione pacchetto nuget versione $reqestedVersion"
 	git tag $reqestedVersion
 	git push
 	git push origin $reqestedVersion
